@@ -10,6 +10,7 @@ private val product = Product(
   favoriteCount = 1,
 )
 
+// danh sach san pham
 private val productList = listOf(
   product,
   Product(
@@ -49,6 +50,7 @@ private val productList = listOf(
   ),
 )
 
+// danh sach don hang
 private val orderList = listOf(
   Order(
     id = UUID.randomUUID().toString(),

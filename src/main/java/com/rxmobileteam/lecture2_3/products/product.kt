@@ -2,6 +2,7 @@ package com.rxmobileteam.lecture2_3.products
 
 import com.rxmobileteam.utils.ExerciseNotCompletedException
 
+// loai san pham
 enum class ProductCategory {
   LAPTOP,
   PHONE,
@@ -10,6 +11,7 @@ enum class ProductCategory {
   CAMERA,
 }
 
+// san pham
 data class Product(
   val id: String,
   val name: String,
@@ -18,9 +20,10 @@ data class Product(
   val favoriteCount: Int,
 )
 
+// don hang
 data class Order(
   val id: String,
-  val products: List<Product>,
+  val products: List<Product>, // danh sach san pham
   val isDelivered: Boolean,
 )
 
@@ -29,10 +32,10 @@ fun List<Product>.sortedByPriceAscendingThenByFavoriteCountDescending(): List<Pr
   throw ExerciseNotCompletedException()
 
 // TODO: Return a set of Products in the orders (The order doesn't matter).
-fun List<Order>.getProductsSet(): Set<Product> = throw ExerciseNotCompletedException()
+fun List<Order>.getProductsSet(): Set<Product> = flatMap { it.products }.toSet()
 
 // TODO: Return a list of Products in the orders, duplicates are allowed.
-fun List<Order>.getProductsList(): List<Product> = throw ExerciseNotCompletedException()
+fun List<Order>.getProductsList(): List<Product> = flatMap { it.products }.toList()
 
 // TODO: Return a list of delivered orders
 fun List<Order>.getDeliveredOrders(): List<Order> = throw ExerciseNotCompletedException()
