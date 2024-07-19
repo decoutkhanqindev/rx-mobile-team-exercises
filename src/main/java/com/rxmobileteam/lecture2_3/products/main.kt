@@ -106,31 +106,31 @@ private val orderList = listOf(
 fun main() {
   //region sortedByPriceAscendingThenByFavoriteCountDescending
   println("sortedByPriceAscendingThenByFavoriteCountDescending")
-  println(productList.sortedByPriceAscendingThenByFavoriteCountDescending())
+  println(productList.sortedByPriceAscendingThenByFavoriteCountDescending().joinToString("\n"))
   println("-".repeat(80))
   //endregion
 
   //region getProductsSet
   println("getProductsSet")
-  println(orderList.getProductsSet())
+  println(orderList.getProductsSet().joinToString("\n"))
   println("-".repeat(80))
   //endregion
 
   //region getProductsList
   println("getProductsList")
-  println(orderList.getProductsList())
+  println(orderList.getProductsList().joinToString("\n"))
   println("-".repeat(80))
   //endregion
 
   //region getDeliveredOrders
   println("getDeliveredOrders")
-  println(orderList.getDeliveredOrders())
+  println(orderList.getDeliveredOrders().joinToString("\n"))
   println("-".repeat(80))
   //endregion getDeliveredProductsList
 
   //region getDeliveredProductsList
   println("getDeliveredProductsList")
-  println(orderList.getDeliveredProductsList())
+  println(orderList.getDeliveredProductsList().joinToString("\n"))
   println("-".repeat(80))
   //endregion
 
@@ -142,7 +142,7 @@ fun main() {
 
   //region countOfEachProduct
   println("countOfEachProduct")
-  println(orderList.countOfEachProduct())
+  println(orderList.countOfEachProduct().size)
   println("-".repeat(80))
   //endregion
 

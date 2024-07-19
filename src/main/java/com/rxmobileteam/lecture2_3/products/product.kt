@@ -16,14 +16,19 @@ data class Product(
   val price: Double,
   val category: ProductCategory,
   val favoriteCount: Int,
-)
+) {
+  override fun toString(): String =
+    "Product(id=$id, name=$name, price=$price, category=$category, favoriteCount=$favoriteCount)"
+}
 
 // don hang
 data class Order(
   val id: String,
   val products: List<Product>, // danh sach san pham
   val isDelivered: Boolean,
-)
+) {
+  override fun toString(): String = "Order(id=$id, products=$products, isDelivered=$isDelivered)"
+}
 
 // TODO: Return a list of Product, sorted in the ascending by price. if prices are equal, sorted by favoriteCount descending
 fun List<Product>.sortedByPriceAscendingThenByFavoriteCountDescending(): List<Product> =
