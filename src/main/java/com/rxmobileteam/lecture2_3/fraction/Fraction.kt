@@ -14,9 +14,8 @@ class Fraction private constructor(
     // TODO: Check validity of numerator and denominator (throw an exception if invalid)
     if (this.denominator == 0) {
       throw ArithmeticException("Denominator cannot be zero.")
-    } else {
-      this.decimal = this.numerator.toDouble() / this.denominator
     }
+    this.decimal = this.numerator.toDouble() / this.denominator
   }
 
   //region unary operators
@@ -58,7 +57,7 @@ class Fraction private constructor(
     val lcm = getLCM(this.denominator, 1)
     // chuyen phan so cua other ve mau so chung
     // (n * b) / b
-    otherToFraction = Fraction(otherToFraction.numerator * lcm, lcm)
+    otherToFraction = Fraction(otherToFraction.numerator * (lcm / otherToFraction.denominator), lcm)
     // cong tu so -> tao phan so moi
     // [a + (n * b)] / b
     val newFraction = this + otherToFraction // su dung "fraction+fraction" operator
