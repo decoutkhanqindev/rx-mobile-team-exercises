@@ -27,7 +27,8 @@ data class Order(
   val products: List<Product>, // danh sach san pham
   val isDelivered: Boolean,
 ) {
-  override fun toString(): String = "Order(id=$id, products=$products, isDelivered=$isDelivered)"
+  override fun toString(): String =
+    "Order(id=$id, products=$products, isDelivered=$isDelivered)"
 }
 
 // TODO: Return a list of Product, sorted in the ascending by price. if prices are equal, sorted by favoriteCount descending
