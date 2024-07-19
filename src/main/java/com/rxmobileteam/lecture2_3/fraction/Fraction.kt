@@ -133,7 +133,6 @@ class Fraction private constructor(
   }
 }
 
-
 // TODO: return a Fraction representing "this/denominator"
 infix fun Int.over(denominator: Int): Fraction = Fraction.of(this, denominator)
 
