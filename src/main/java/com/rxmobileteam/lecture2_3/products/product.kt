@@ -27,15 +27,15 @@ data class Order(
   val isDelivered: Boolean,
 )
 
-// flatMap nhan vao 1 func lambda de chuyen doi moi phan tu cua collection thanh iterable (set, list)
-// tra ve ket hop cac iterable thanh 1 collection duy nhat
-
 // TODO: Return a list of Product, sorted in the ascending by price. if prices are equal, sorted by favoriteCount descending
 fun List<Product>.sortedByPriceAscendingThenByFavoriteCountDescending(): List<Product> =
   this.sortedWith( // sap xep tang dan cac phan tu cua collection voi comparator
     compareBy<Product> { it.price } // comparator: compare theo price cua product
       .thenByDescending { it.favoriteCount } // comparator phu: compare va sap xep des favouriteCount cua product
   )
+
+// flatMap nhan vao 1 func lambda de chuyen doi moi phan tu cua collection thanh iterable (set, list)
+// tra ve ket hop cac iterable thanh 1 collection duy nhat
 
 // TODO: Return a set of Products in the orders (The order doesn't matter).
 fun List<Order>.getProductsSet(): Set<Product> = this.flatMap { it.products }.toSet()
