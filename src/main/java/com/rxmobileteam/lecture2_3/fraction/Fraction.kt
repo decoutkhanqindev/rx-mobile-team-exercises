@@ -28,8 +28,8 @@ class Fraction private constructor(
 
   //region plus operators
   // TODO: "fraction+fraction" operator
+  // a/b + c/d
   operator fun plus(other: Fraction): Fraction {
-    // a/b + c/d
     // cung mau so -> b = d
     if (this.denominator == other.denominator) {
       // (a + d)/(c + b)
@@ -49,8 +49,8 @@ class Fraction private constructor(
   }
 
   // TODO: "fraction+number" operator
+  // a/b + n
   operator fun plus(other: Int): Fraction {
-    // a/b + n
     // chuyen other thanh phan so -> n/1
     var otherToFraction = ofInt(other)
     // tim mau so chung -> b
@@ -66,8 +66,8 @@ class Fraction private constructor(
 
   //region times operators
   // TODO: "fraction*fraction" operator
+  // a/b * c/d -> (a * c) / (b * d)
   operator fun times(other: Fraction): Fraction =
-    // a/b * c/d -> (a * c) / (b * d)
     Fraction(this.numerator * other.numerator, this.denominator * other.denominator)
 
   // TODO: "fraction*number" operator
