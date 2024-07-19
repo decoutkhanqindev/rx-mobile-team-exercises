@@ -1,6 +1,7 @@
 package com.rxmobileteam.lecture2_3.products
 
 import com.rxmobileteam.utils.ExerciseNotCompletedException
+import kotlin.math.max
 
 // loai san pham
 enum class ProductCategory {
@@ -27,36 +28,38 @@ data class Order(
   val isDelivered: Boolean,
 )
 
+// flatMap nhan vao 1 func lambda de chuyen doi moi phan tu cua collection thanh iterable (set, list)
+// sau do ket hop cac iterable thanh 1 collection duy nhat
+
 // TODO: Return a list of Product, sorted in the ascending by price. if prices are equal, sorted by favoriteCount descending
 fun List<Product>.sortedByPriceAscendingThenByFavoriteCountDescending(): List<Product> =
   throw ExerciseNotCompletedException()
 
 // TODO: Return a set of Products in the orders (The order doesn't matter).
-fun List<Order>.getProductsSet(): Set<Product> = flatMap { it.products }.toSet()
+fun List<Order>.getProductsSet(): Set<Product> = this.flatMap { it.products }.toSet()
 
 // TODO: Return a list of Products in the orders, duplicates are allowed.
-fun List<Order>.getProductsList(): List<Product> = flatMap { it.products }.toList()
+fun List<Order>.getProductsList(): List<Product> = this.flatMap { it.products }.toList()
 
 // TODO: Return a list of delivered orders
-fun List<Order>.getDeliveredOrders(): List<Order> = throw ExerciseNotCompletedException()
+fun List<Order>.getDeliveredOrders(): List<Order> = this.filter { it.isDelivered == true }
 
 // TODO: Return a list of products in the delivered orders
-fun List<Order>.getDeliveredProductsList(): List<Product> = throw ExerciseNotCompletedException()
+fun List<Order>.getDeliveredProductsList(): List<Product> = this.getDeliveredOrders().getProductsList()
 
 // TODO: Partition the orders into two lists: "delivered" and "not delivered"
 fun List<Order>.partitionDeliveredAndNotDelivered(): Pair<List<Order>, List<Order>> =
   throw ExerciseNotCompletedException()
 
-// TODO: Return a map of product to count of this product in the orders
-// eg. [Product1 -> 2, Product2 -> 1, Product3 -> 3]
+// TODO: Return a map of product to count of this product in the orders (eg. [Product1 -> 2, Product2 -> 1, Product3 -> 3])
 fun List<Order>.countOfEachProduct(): Map<Product, Int> = throw ExerciseNotCompletedException()
 
 // TODO: Return the sum of product prices in the order
-fun Order.sumProductPrice(): Double = throw ExerciseNotCompletedException()
+fun Order.sumProductPrice(): Double = this.products.sumOf { it.price }
 
 // TODO: Return the product with the maximum price in the order
-fun Order.getMaxPriceProduct(): Product = throw ExerciseNotCompletedException()
+fun Order.getMaxPriceProduct(): Product = this.products.maxBy { it.price }
 
 // TODO: Return the product with the min price in the order
-fun Order.getMinPriceProduct(): Product = throw ExerciseNotCompletedException()
+fun Order.getMinPriceProduct(): Product = this.products.minBy { it.price }
 
