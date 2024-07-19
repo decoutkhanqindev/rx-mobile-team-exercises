@@ -1,7 +1,5 @@
 package com.rxmobileteam.lecture2_3.products
 
-import com.rxmobileteam.utils.ExerciseNotCompletedException
-
 // loai san pham
 enum class ProductCategory {
   LAPTOP,
