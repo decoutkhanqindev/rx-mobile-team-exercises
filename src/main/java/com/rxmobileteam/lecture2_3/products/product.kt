@@ -58,7 +58,6 @@ fun List<Order>.partitionDeliveredAndNotDelivered(): Pair<List<Order>, List<Orde
 // eg. [Product1 -> 2, Product2 -> 1, Product3 -> 3]
 fun List<Order>.countOfEachProduct(): Map<Product, Int> = throw ExerciseNotCompletedException()
 
-
 // TODO: Return the sum of product prices in the order
 fun Order.sumProductPrice(): Double = this.products.sumOf { it.price }
 
