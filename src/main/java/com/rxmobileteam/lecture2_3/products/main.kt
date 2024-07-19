@@ -107,55 +107,55 @@ fun main() {
   //region sortedByPriceAscendingThenByFavoriteCountDescending
   println("sortedByPriceAscendingThenByFavoriteCountDescending")
   println(productList.sortedByPriceAscendingThenByFavoriteCountDescending().joinToString("\n"))
-  println("-".repeat(80))
+  println("-".repeat(100))
   //endregion
 
   //region getProductsSet
   println("getProductsSet")
   println(orderList.getProductsSet().joinToString("\n"))
-  println("-".repeat(80))
+  println("-".repeat(100))
   //endregion
 
   //region getProductsList
   println("getProductsList")
   println(orderList.getProductsList().joinToString("\n"))
-  println("-".repeat(80))
+  println("-".repeat(100))
   //endregion
 
   //region getDeliveredOrders
   println("getDeliveredOrders")
   println(orderList.getDeliveredOrders().joinToString("\n"))
-  println("-".repeat(80))
+  println("-".repeat(100))
   //endregion getDeliveredProductsList
 
   //region getDeliveredProductsList
   println("getDeliveredProductsList")
   println(orderList.getDeliveredProductsList().joinToString("\n"))
-  println("-".repeat(80))
+  println("-".repeat(100))
   //endregion
 
   //region partitionDeliveredAndNotDelivered
   println("partitionDeliveredAndNotDelivered")
   println(orderList.partitionDeliveredAndNotDelivered())
-  println("-".repeat(80))
+  println("-".repeat(100))
   //endregion
 
   //region countOfEachProduct
   println("countOfEachProduct")
   println(orderList.countOfEachProduct().size)
-  println("-".repeat(80))
+  println("-".repeat(100))
   //endregion
 
   //region sumProductPrice
   println("sumProductPrice")
   println(orderList[0].sumProductPrice())
-  println("-".repeat(80))
+  println("-".repeat(100))
   //endregion
 
   //region getMaxPriceProduct, getMinPriceProduct
   println("getMaxPriceProduct, getMinPriceProduct")
   println(orderList[0].getMaxPriceProduct())
   println(orderList[0].getMinPriceProduct())
-  println("-".repeat(80))
+  println("-".repeat(100))
   //endregion
 }
