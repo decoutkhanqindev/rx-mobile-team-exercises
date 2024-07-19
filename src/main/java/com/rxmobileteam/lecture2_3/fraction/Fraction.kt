@@ -60,8 +60,7 @@ class Fraction private constructor(
     otherToFraction = Fraction(otherToFraction.numerator * (lcm / otherToFraction.denominator), lcm)
     // cong tu so -> tao phan so moi
     // [a + (n * b)] / b
-    val newFraction = this + otherToFraction // su dung "fraction+fraction" operator
-    return Fraction(newFraction.numerator, newFraction.denominator)
+    return this + otherToFraction // su dung "fraction+fraction" operator
   }
   //endregion
 
