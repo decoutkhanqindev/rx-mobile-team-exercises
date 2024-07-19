@@ -28,7 +28,7 @@ data class Order(
 )
 
 // flatMap nhan vao 1 func lambda de chuyen doi moi phan tu cua collection thanh iterable (set, list)
-// sau do ket hop cac iterable thanh 1 collection duy nhat
+// tra ve ket hop cac iterable thanh 1 collection duy nhat
 
 // TODO: Return a list of Product, sorted in the ascending by price. if prices are equal, sorted by favoriteCount descending
 fun List<Product>.sortedByPriceAscendingThenByFavoriteCountDescending(): List<Product> =
@@ -49,9 +49,10 @@ fun List<Order>.getDeliveredOrders(): List<Order> = this.filter { it.isDelivered
 // TODO: Return a list of products in the delivered orders
 fun List<Order>.getDeliveredProductsList(): List<Product> = this.getDeliveredOrders().getProductsList()
 
+// partition dung de phan chia 1 list thanh 2 list dua tren predicate
+// tra ve 1 pair chua 2 list, list 1 la thoa man dieu kien <-> list 2 la khong thoa man dieu kien
 // TODO: Partition the orders into two lists: "delivered" and "not delivered"
-fun List<Order>.partitionDeliveredAndNotDelivered(): Pair<List<Order>, List<Order>> =
-  throw ExerciseNotCompletedException()
+fun List<Order>.partitionDeliveredAndNotDelivered(): Pair<List<Order>, List<Order>> = this.partition { it.isDelivered }
 
 // TODO: Return a map of product to count of this product in the orders
 // eg. [Product1 -> 2, Product2 -> 1, Product3 -> 3]
