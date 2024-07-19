@@ -2,7 +2,6 @@ package com.rxmobileteam.lecture1.service;
 
 import com.rxmobileteam.lecture1.data.IProductDao;
 import com.rxmobileteam.lecture1.data.ProductDao;
-import com.rxmobileteam.utils.ExerciseNotCompletedException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
  * TODO: 2. Using {@link ProductDao} implement method {@link ProductService#searchProducts(String)}
  */
 public class ProductService {
-    private IProductDao dao;
+    private final IProductDao dao;
 
     public ProductService(IProductDao dao) {
         this.dao = dao;

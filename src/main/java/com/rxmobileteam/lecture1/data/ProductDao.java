@@ -1,7 +1,6 @@
 package com.rxmobileteam.lecture1.data;
 
 import com.rxmobileteam.lecture1.service.Product;
-import com.rxmobileteam.utils.ExerciseNotCompletedException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
