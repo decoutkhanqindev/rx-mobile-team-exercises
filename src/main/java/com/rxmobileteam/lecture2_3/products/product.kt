@@ -33,7 +33,11 @@ data class Order(
 
 // TODO: Return a list of Product, sorted in the ascending by price. if prices are equal, sorted by favoriteCount descending
 fun List<Product>.sortedByPriceAscendingThenByFavoriteCountDescending(): List<Product> =
-  throw ExerciseNotCompletedException()
+  this.sortedWith( // sap xep tang dan cac phan tu cua collection theo comparator
+    compareBy<Product> { it.price } // comparator theo price cua product
+      .thenByDescending { it.favoriteCount } // comparator phu sap xep giam dan favouriteCount cua product
+  )
+
 
 // TODO: Return a set of Products in the orders (The order doesn't matter).
 fun List<Order>.getProductsSet(): Set<Product> = this.flatMap { it.products }.toSet()
@@ -51,7 +55,8 @@ fun List<Order>.getDeliveredProductsList(): List<Product> = this.getDeliveredOrd
 fun List<Order>.partitionDeliveredAndNotDelivered(): Pair<List<Order>, List<Order>> =
   throw ExerciseNotCompletedException()
 
-// TODO: Return a map of product to count of this product in the orders (eg. [Product1 -> 2, Product2 -> 1, Product3 -> 3])
+// TODO: Return a map of product to count of this product in the orders
+// eg. [Product1 -> 2, Product2 -> 1, Product3 -> 3]
 fun List<Order>.countOfEachProduct(): Map<Product, Int> = throw ExerciseNotCompletedException()
 
 // TODO: Return the sum of product prices in the order
