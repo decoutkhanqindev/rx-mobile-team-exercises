@@ -55,9 +55,9 @@ fun List<Order>.partitionDeliveredAndNotDelivered(): Pair<List<Order>, List<Orde
 // TODO: Return a map of product to count of this product in the orders
 // eg. [Product1 -> 2, Product2 -> 1, Product3 -> 3]
 fun List<Order>.countOfEachProduct(): Map<Product, Int> =
-  this.flatMap { it.products}
+  this.getProductsList()
     // groupBy: tao ra 1 group, tra ve 1 map doi list cac group phan tu theo khoa dua tren predicate
-    .groupingBy { it } // tao ra 1 group obj co the thuc hien cac phep toan tre moi obj, tra ve 1 map obj
+    .groupingBy { it } // tao ra 1 group obj co the thuc hien cac phep toan tre moi obj, cac product giong nhau se chung 1 group
     .eachCount() // dem moi group obj - nhom san pham
 
 // TODO: Return the sum of product prices in the order
