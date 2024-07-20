@@ -76,9 +76,7 @@ class Fraction private constructor(
   //endregion
 
   // TODO: Compare two fractions
-  override fun compareTo(other: Fraction): Int {
-    return this.decimal.compareTo(other.decimal)
-  }
+  override fun compareTo(other: Fraction): Int = this.decimal.compareTo(other.decimal)
 
   //region toString, hashCode, equals, copy
   // TODO: Format the fraction as a string (e.g. "1/2")
@@ -145,12 +143,11 @@ operator fun Fraction.component2(): Int = this.denominator
 // TODO: eg. "val numerator = Fraction.of(1, 2)[0]"
 // TODO: eg. "val denominator = Fraction.of(1, 2)[1]"
 // TODO: eg. "val denominator = Fraction.of(1, 2)[2]" should throw an exception
-operator fun Fraction.get(index: Int): Int =
-  when (index) {
-    0 -> this.numerator
-    1 -> this.denominator
-    else -> throw IndexOutOfBoundsException("Index must be 0 or 1")
-  }
+operator fun Fraction.get(index: Int): Int = when (index) {
+  0 -> this.numerator
+  1 -> this.denominator
+  else -> throw IndexOutOfBoundsException("Index must be 0 or 1")
+}
 //endregion
 
 //region to number extensions
