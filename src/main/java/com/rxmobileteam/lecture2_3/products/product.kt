@@ -42,26 +42,21 @@ fun List<Product>.sortedByPriceAscendingThenByFavoriteCountDescending(): List<Pr
 // tra ve ket hop cac iterable thanh 1 collection duy nhat
 
 // TODO: Return a set of Products in the orders (The order doesn't matter).
-fun List<Order>.getProductsSet(): Set<Product> =
-  this.flatMap { it.products }.toSet()
+fun List<Order>.getProductsSet(): Set<Product> = this.flatMap { it.products }.toSet()
 
 // TODO: Return a list of Products in the orders, duplicates are allowed.
-fun List<Order>.getProductsList(): List<Product> =
-  this.flatMap { it.products }.toList()
+fun List<Order>.getProductsList(): List<Product> = this.flatMap { it.products }.toList()
 
 // TODO: Return a list of delivered orders
-fun List<Order>.getDeliveredOrders(): List<Order> =
-  this.filter { it.isDelivered == true }
+fun List<Order>.getDeliveredOrders(): List<Order> = this.filter { it.isDelivered == true }
 
 // TODO: Return a list of products in the delivered orders
-fun List<Order>.getDeliveredProductsList(): List<Product> =
-  this.getDeliveredOrders().getProductsList()
+fun List<Order>.getDeliveredProductsList(): List<Product> = this.getDeliveredOrders().getProductsList()
 
 // partition dung de phan chia 1 list thanh 2 list dua tren predicate
 // tra ve 1 pair chua 2 list, list 1 la thoa man dieu kien <-> list 2 la khong thoa man dieu kien
 // TODO: Partition the orders into two lists: "delivered" and "not delivered"
-fun List<Order>.partitionDeliveredAndNotDelivered(): Pair<List<Order>, List<Order>> =
-  this.partition { it.isDelivered }
+fun List<Order>.partitionDeliveredAndNotDelivered(): Pair<List<Order>, List<Order>> = this.partition { it.isDelivered }
 
 // TODO: Return a map of product to count of this product in the orders
 // eg. [Product1 -> 2, Product2 -> 1, Product3 -> 3]
@@ -72,8 +67,7 @@ fun List<Order>.countOfEachProduct(): Map<Product, Int> =
     .eachCount() // dem moi group obj - nhom san pham
 
 // TODO: Return the sum of product prices in the order
-fun Order.sumProductPrice(): Double =
-  this.products.sumOf { it.price }
+fun Order.sumProductPrice(): Double = this.products.sumOf { it.price }
 
 // TODO: Return the product with the maximum price in the order
 fun Order.getMaxPriceProduct(): Product =
