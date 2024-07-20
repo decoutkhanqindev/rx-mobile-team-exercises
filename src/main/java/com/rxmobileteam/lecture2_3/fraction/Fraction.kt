@@ -33,7 +33,7 @@ class Fraction private constructor(
     // cung mau so -> b = d
     if (this.denominator == other.denominator) {
       // (a + d)/(c + b)
-      return Fraction(this.numerator + other.denominator, this.denominator)
+      return Fraction(this.numerator + other.numerator, this.denominator)
     } else {
       // tim mau so chung -> e
       val lcm = getLCM(this.denominator, other.denominator)
