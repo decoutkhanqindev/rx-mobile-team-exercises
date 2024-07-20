@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.rxmobileteam.lecture2_3.delegated_properties
 
 import com.rxmobileteam.lecture2_3.delegated_properties.StringOperationDelegates.capitalized
@@ -16,14 +18,14 @@ object StringOperationDelegates {
   fun uppercase(initial: String, locale: Locale = Locale.ROOT): ReadWriteProperty<Any?, String> =
     // TODO: Implement the delegate. Note: avoid unnecessary operations/computations as much as possible
     object : ReadWriteProperty<Any?, String> {
-      private var uppercaseValue: String = throw ExerciseNotCompletedException()
+      private var uppercaseValue: String = initial.uppercase()
 
       // TODO: Implement the getValue
-      override fun getValue(thisRef: Any?, property: KProperty<*>): String = throw ExerciseNotCompletedException()
+      override fun getValue(thisRef: Any?, property: KProperty<*>): String = this.uppercaseValue
 
       // TODO: Implement the setValue
       override fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
-        throw ExerciseNotCompletedException()
+        this.uppercaseValue = value.uppercase()
       }
     }
 
@@ -33,14 +35,14 @@ object StringOperationDelegates {
   fun trimmed(initial: String): ReadWriteProperty<Any?, String> =
     // TODO: Implement the delegate. Note: avoid unnecessary operations/computations as much as possible
     object : ReadWriteProperty<Any?, String> {
-      private var trimmedValue: String = throw ExerciseNotCompletedException()
+      private var trimmedValue: String = initial.trim()
 
       // TODO: Implement the getValue
-      override fun getValue(thisRef: Any?, property: KProperty<*>): String = throw ExerciseNotCompletedException()
+      override fun getValue(thisRef: Any?, property: KProperty<*>): String = this.trimmedValue
 
       // TODO: Implement the setValue
       override fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
-        throw ExerciseNotCompletedException()
+        this.trimmedValue = value.trim()
       }
     }
 
@@ -50,14 +52,14 @@ object StringOperationDelegates {
   fun capitalized(initial: String): ReadWriteProperty<Any?, String> =
     // TODO: Implement the delegate. Note: avoid unnecessary operations/computations as much as possible
     object : ReadWriteProperty<Any?, String> {
-      private var value: String = throw ExerciseNotCompletedException()
+      private var value: String = initial.capitalize()
 
       // TODO: Implement the getValue
-      override fun getValue(thisRef: Any?, property: KProperty<*>): String = throw ExerciseNotCompletedException()
+      override fun getValue(thisRef: Any?, property: KProperty<*>): String = this.value
 
       // TODO: Implement the setValue
       override fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
-        throw ExerciseNotCompletedException()
+        this.value = value.capitalize()
       }
     }
 }
