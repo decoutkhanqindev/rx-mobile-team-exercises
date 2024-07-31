@@ -45,10 +45,10 @@ fun List<Product>.sortedByPriceAscendingThenByFavoriteCountDescending(): List<Pr
 fun List<Order>.getProductsSet(): Set<Product> = this.flatMap { it.products }.toSet()
 
 // TODO: Return a list of Products in the orders, duplicates are allowed.
-fun List<Order>.getProductsList(): List<Product> = this.flatMap { it.products }.toList()
+fun List<Order>.getProductsList(): List<Product> = this.flatMap { it.products }
 
 // TODO: Return a list of delivered orders
-fun List<Order>.getDeliveredOrders(): List<Order> = this.filter { it.isDelivered == true }
+fun List<Order>.getDeliveredOrders(): List<Order> = this.filter { it.isDelivered }
 
 // TODO: Return a list of products in the delivered orders
 fun List<Order>.getDeliveredProductsList(): List<Product> = this.getDeliveredOrders().getProductsList()
@@ -65,6 +65,7 @@ fun List<Order>.countOfEachProduct(): Map<Product, Int> =
     // groupBy: tao ra 1 group, tra ve 1 map doi list cac group phan tu theo khoa dua tren predicate
     .groupingBy { it } // tao ra 1 group obj co the thuc hien cac phep toan tre moi obj, cac product giong nhau se chung 1 group
     .eachCount() // dem moi group obj - nhom san pham
+    // -> map so lan xuat hien cua san pham
 
 // TODO: Return the sum of product prices in the order
 fun Order.sumProductPrice(): Double = this.products.sumOf { it.price }
