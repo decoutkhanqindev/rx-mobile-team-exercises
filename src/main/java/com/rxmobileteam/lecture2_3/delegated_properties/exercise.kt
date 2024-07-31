@@ -5,6 +5,8 @@ package com.rxmobileteam.lecture2_3.delegated_properties
 import com.rxmobileteam.lecture2_3.delegated_properties.StringOperationDelegates.capitalized
 import com.rxmobileteam.lecture2_3.delegated_properties.StringOperationDelegates.trimmed
 import com.rxmobileteam.lecture2_3.delegated_properties.StringOperationDelegates.uppercase
+import java.util.Locale
+import java.util.Locale.US
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -13,10 +15,10 @@ object StringOperationDelegates {
    * Allows to store a string in uppercase
    */
   @JvmStatic
-  fun uppercase(initial: String): ReadWriteProperty<Any?, String> =
+  fun uppercase(initial: String, locate: Locale): ReadWriteProperty<Any?, String> =
     // TODO: Implement the delegate. Note: avoid unnecessary operations/computations as much as possible
     object : ReadWriteProperty<Any?, String> {
-      private var uppercaseValue: String = initial.uppercase()
+      private var uppercaseValue: String = initial.uppercase(locate)
 
       // TODO: Implement the getValue
       override fun getValue(thisRef: Any?, property: KProperty<*>): String = this.uppercaseValue
@@ -63,7 +65,7 @@ object StringOperationDelegates {
 }
 
 private class MyUser {
-  var name: String by uppercase(initial = "rx-mobile-team")
+  var name: String by uppercase(initial = "rx-mobile-team", US)
   var bio: String by trimmed(initial = "Good")
   var city: String by capitalized(initial = "hanoi")
 }
