@@ -20,10 +20,10 @@ class Fraction private constructor(
 
   //region unary operators
   // TODO: "+fraction" operator
-  operator fun unaryPlus(): Fraction = Fraction(+this.numerator, +this.denominator)
+  operator fun unaryPlus(): Fraction = this
 
   // TODO: "-fraction" operator
-  operator fun unaryMinus(): Fraction = Fraction(-this.numerator, +this.denominator)
+  operator fun unaryMinus(): Fraction = Fraction(-this.numerator, this.denominator)
   //endregion
 
   //region plus operators
@@ -44,7 +44,7 @@ class Fraction private constructor(
       val secondNumerator = other.numerator * (lcm / other.denominator)
       // cong tu so -> tao phan so moi
       // {[a * (e/b)] + [c * (e/d)]} / e
-      return Fraction(firstNumerator + secondNumerator, lcm)
+      return of(firstNumerator + secondNumerator, lcm)
     }
   }
 
@@ -68,11 +68,11 @@ class Fraction private constructor(
   // TODO: "fraction*fraction" operator
   // a/b * c/d -> (a * c) / (b * d)
   operator fun times(other: Fraction): Fraction =
-    Fraction(this.numerator * other.numerator, this.denominator * other.denominator)
+    of(this.numerator * other.numerator, this.denominator * other.denominator)
 
   // TODO: "fraction*number" operator
   // a/b * n -> (a * n) / b
-  operator fun times(number: Int): Fraction = Fraction(this.numerator * number, this.denominator)
+  operator fun times(number: Int): Fraction = of(this.numerator * number, this.denominator)
   //endregion
 
   // TODO: Compare two fractions
@@ -91,12 +91,12 @@ class Fraction private constructor(
     if (this === other) return true
     // different type
     else if (other !is Fraction) return false
-    return this.numerator * other.denominator == this.denominator * other.numerator
+    return this.numerator == other.denominator && this.denominator == other.numerator
   }
 
   // TODO: Implement copy
   fun copy(numerator: Int = this.numerator, denominator: Int = this.denominator): Fraction =
-    Fraction(numerator, denominator)
+    of(numerator, denominator)
   //endregion
 
   companion object {
@@ -122,7 +122,7 @@ class Fraction private constructor(
     }
 
     // tim boi chung lon nhat
-    private fun getGCD(a: Int, b: Int): Int = if (b == 0) a else getGCD(b, a % b)
+    private tailrec fun getGCD(a: Int, b: Int): Int = if (b == 0) a else getGCD(b, a % b)
 
     // tim boi chung nho nhat
     private fun getLCM(a: Int, b: Int): Int = a * b / getGCD(a, b)
