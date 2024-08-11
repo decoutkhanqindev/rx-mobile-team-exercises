@@ -10,6 +10,7 @@ private val product = Product(
   favoriteCount = 1,
 )
 
+// danh sach san pham
 private val productList = listOf(
   product,
   Product(
@@ -49,6 +50,7 @@ private val productList = listOf(
   ),
 )
 
+// danh sach don hang
 private val orderList = listOf(
   Order(
     id = UUID.randomUUID().toString(),
@@ -104,56 +106,56 @@ private val orderList = listOf(
 fun main() {
   //region sortedByPriceAscendingThenByFavoriteCountDescending
   println("sortedByPriceAscendingThenByFavoriteCountDescending")
-  println(productList.sortedByPriceAscendingThenByFavoriteCountDescending())
-  println("-".repeat(80))
+  println(productList.sortedByPriceAscendingThenByFavoriteCountDescending().joinToString("\n"))
+  println("-".repeat(100))
   //endregion
 
   //region getProductsSet
   println("getProductsSet")
-  println(orderList.getProductsSet())
-  println("-".repeat(80))
+  println(orderList.getProductsSet().joinToString("\n"))
+  println("-".repeat(100))
   //endregion
 
   //region getProductsList
   println("getProductsList")
-  println(orderList.getProductsList())
-  println("-".repeat(80))
+  println(orderList.getProductsList().joinToString("\n"))
+  println("-".repeat(100))
   //endregion
 
   //region getDeliveredOrders
   println("getDeliveredOrders")
-  println(orderList.getDeliveredOrders())
-  println("-".repeat(80))
+  println(orderList.getDeliveredOrders().joinToString("\n"))
+  println("-".repeat(100))
   //endregion getDeliveredProductsList
 
   //region getDeliveredProductsList
   println("getDeliveredProductsList")
-  println(orderList.getDeliveredProductsList())
-  println("-".repeat(80))
+  println(orderList.getDeliveredProductsList().joinToString("\n"))
+  println("-".repeat(100))
   //endregion
 
   //region partitionDeliveredAndNotDelivered
   println("partitionDeliveredAndNotDelivered")
   println(orderList.partitionDeliveredAndNotDelivered())
-  println("-".repeat(80))
+  println("-".repeat(100))
   //endregion
 
   //region countOfEachProduct
   println("countOfEachProduct")
-  println(orderList.countOfEachProduct())
-  println("-".repeat(80))
+  println(orderList.countOfEachProduct().size)
+  println("-".repeat(100))
   //endregion
 
   //region sumProductPrice
   println("sumProductPrice")
   println(orderList[0].sumProductPrice())
-  println("-".repeat(80))
+  println("-".repeat(100))
   //endregion
 
   //region getMaxPriceProduct, getMinPriceProduct
   println("getMaxPriceProduct, getMinPriceProduct")
   println(orderList[0].getMaxPriceProduct())
   println(orderList[0].getMinPriceProduct())
-  println("-".repeat(80))
+  println("-".repeat(100))
   //endregion
 }

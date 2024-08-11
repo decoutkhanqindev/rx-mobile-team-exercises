@@ -1,5 +1,7 @@
 package com.rxmobileteam.lecture1.factory;
 
+import com.rxmobileteam.lecture1.data.IProductDao;
+import com.rxmobileteam.lecture1.data.ProductDao;
 import com.rxmobileteam.lecture1.service.ProductService;
 import com.rxmobileteam.utils.ExerciseNotCompletedException;
 import org.jetbrains.annotations.NotNull;
@@ -16,9 +18,11 @@ public class ProductServiceFactory {
      *
      * @return ProductService
      */
+
+    private final IProductDao dao = new ProductDao();
+
     @NotNull
     public ProductService createProductService() {
-        // TODO: implement this method
-        throw new ExerciseNotCompletedException();
+        return new ProductService(dao);
     }
 }
