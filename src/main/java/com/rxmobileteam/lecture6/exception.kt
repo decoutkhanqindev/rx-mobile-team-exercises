@@ -36,8 +36,17 @@ class DemoModel(
     // Call logger.logError() with the exception and a message
     // Note: You must preserve the cancellation semantics of the coroutine
 
-    scope.launch {
-      maybeFailedFunction()
+    val handler = CoroutineExceptionHandler { _, throwable ->
+      logger.logError(throwable, "maybeFailedFunction() is failed")
+    }
+
+    scope.launch(handler) {
+      try {
+        val result = maybeFailedFunction()
+        logger.log(result.toString())
+      } catch (e: Exception) {
+        logger.logError(e,"Unexpected error")
+      }
     }
   }
 
