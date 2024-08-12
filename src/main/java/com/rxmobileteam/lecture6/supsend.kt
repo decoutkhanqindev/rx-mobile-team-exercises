@@ -1,10 +1,11 @@
 package com.rxmobileteam.lecture6
 
+import java.util.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import java.util.*
+import kotlinx.coroutines.withContext
 
 @JvmInline
 value class UserId(val id: Int)
@@ -75,96 +76,102 @@ internal class RealUserRepository(
   private val userApi: UserApi,
   private val ioDispatcher: CoroutineDispatcher,
 ) : UserRepository {
+
+  // TODO: Call userApi's methods on ioDispatcher
   override suspend fun findUserById(id: UserId): User? {
-    // Call userApi's methods on ioDispatcher
-    TODO("Not yet implemented")
+    return withContext(ioDispatcher) {
+      userApi.findUserById(id)
+    }
   }
 
+  // TODO: Call userApi's methods on ioDispatcher
   override suspend fun getPostsByUserId(id: UserId): List<Post> {
-    // Call userApi's methods on ioDispatcher
-    TODO("Not yet implemented")
+    val user: User? = this.findUserById(id)
+    return withContext(ioDispatcher) {
+      user?.let { userApi.getPostsByUser(user) } ?: emptyList()
+    }
   }
 
+  // TODO: Call userApi's methods on ioDispatcher
   override suspend fun findUserAndPostsById(id: UserId): UserAndPosts? {
-    // Call userApi's methods on ioDispatcher
-    TODO("Not yet implemented")
+    val user: User? = this.findUserById(id)
+    val posts: List<Post> = this.getPostsByUserId(id)
+    return withContext(ioDispatcher) {
+      user?.let { UserAndPosts(user, posts) }
+    }
   }
 
+  // TODO: Call userApi's methods on ioDispatcher
   override suspend fun findUserAndUserDetailsById(id: UserId): UserAndDetails? {
-    // Call concurrently userApi's methods on ioDispatcher
-    TODO("Not yet implemented")
+    val user: User? = this.findUserById(id)
+    val userDetails: UserDetails? = userApi.findDetailsByUser(id)
+    return withContext(ioDispatcher) {
+      user?.let { userDetails?.let { UserAndDetails(user, userDetails) } }
+    }
   }
 }
 
 // ------------------------------------------------------------------------------------------
 
-fun provideUserRepository(): UserRepository =
-  RealUserRepository(
-    userApi = object : UserApi {
-      val users = listOf(
-        User(UserId(1), "Leanne Graham"),
-        User(UserId(2), "Ervin Howell"),
-        User(UserId(3), "Clementine Bauch"),
-        User(UserId(4), "Patricia Lebsack"),
-        User(UserId(5), "Chelsey Dietrich"),
+fun provideUserRepository(): UserRepository = RealUserRepository(
+  userApi = object : UserApi {
+    val users = listOf(
+      User(UserId(1), "Leanne Graham"),
+      User(UserId(2), "Ervin Howell"),
+      User(UserId(3), "Clementine Bauch"),
+      User(UserId(4), "Patricia Lebsack"),
+      User(UserId(5), "Chelsey Dietrich"),
+    )
+    val userDetails = users.map {
+      UserDetails(
+        id = it.id,
+        email = "${it.name.replace(" ", ".").lowercase()}@gmail.com",
+        phone = "+1-770-736-8031",
       )
-      val userDetails = users.map {
-        UserDetails(
-          id = it.id,
-          email = "${it.name.replace(" ", ".").lowercase()}@gmail.com",
-          phone = "+1-770-736-8031",
+    }
+    val posts = users.map { user ->
+      List(10) {
+        Post(
+          id = UUID.randomUUID().toString(),
+          title = "Title #${it} of ${user.name}",
+          body = "Body #${it} of ${user.name}",
+          userId = user.id,
         )
       }
-      val posts = users.map { user ->
-        List(10) {
-          Post(
-            id = UUID.randomUUID().toString(),
-            title = "Title #${it} of ${user.name}",
-            body = "Body #${it} of ${user.name}",
-            userId = user.id,
-          )
-        }
-      }
+    }
 
-      override suspend fun findUserById(id: UserId): User? = users
-        .find { it.id == id }
-        .also { delay(500) }
+    override suspend fun findUserById(id: UserId): User? = users.find { it.id == id }.also { delay(500) }
 
-      override suspend fun findDetailsByUser(id: UserId): UserDetails? =
-        userDetails
-          .find { it.id == id }
-          .also { delay(500) }
+    override suspend fun findDetailsByUser(id: UserId): UserDetails? =
+      userDetails.find { it.id == id }.also { delay(500) }
 
-      override suspend fun getPostsByUser(user: User): List<Post> =
-        posts
-          .find { it.firstOrNull()?.userId == user.id }
-          .orEmpty()
-          .also { delay(500) }
-    },
-    ioDispatcher = Dispatchers.IO,
-  )
+    override suspend fun getPostsByUser(user: User): List<Post> =
+      posts.find { it.firstOrNull()?.userId == user.id }.orEmpty().also { delay(500) }
+  },
+  ioDispatcher = Dispatchers.IO,
+)
 
 
 fun main() = runBlocking {
   val userRepository = provideUserRepository()
 
   println("findUserById")
-  userRepository.findUserById(UserId(1))
-  userRepository.findUserById(UserId(100))
+  println(userRepository.findUserById(UserId(1)))
+  println(userRepository.findUserById(UserId(100)))
   println("-".repeat(80))
 
   println("getPostsByUserId")
-  userRepository.getPostsByUserId(UserId(1))
-  userRepository.getPostsByUserId(UserId(100))
+  println(userRepository.getPostsByUserId(UserId(1)))
+  println(userRepository.getPostsByUserId(UserId(100)))
   println("-".repeat(80))
 
   println("findUserAndPostsById")
-  userRepository.findUserAndPostsById(UserId(1))
-  userRepository.findUserAndPostsById(UserId(100))
+  println(userRepository.findUserAndPostsById(UserId(1)))
+  println(userRepository.findUserAndPostsById(UserId(100)))
   println("-".repeat(80))
 
   println("findUserAndUserDetailsById")
-  userRepository.findUserAndUserDetailsById(UserId(1))
-  userRepository.findUserAndUserDetailsById(UserId(100))
+  println(userRepository.findUserAndUserDetailsById(UserId(1)))
+  println(userRepository.findUserAndUserDetailsById(UserId(100)))
   println("-".repeat(80))
 }
