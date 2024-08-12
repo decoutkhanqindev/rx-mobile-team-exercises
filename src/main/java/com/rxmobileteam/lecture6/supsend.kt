@@ -78,36 +78,28 @@ internal class RealUserRepository(
 ) : UserRepository {
 
   // TODO: Call userApi's methods on ioDispatcher
-  override suspend fun findUserById(id: UserId): User? {
-    return withContext(ioDispatcher) {
-      userApi.findUserById(id)
-    }
+  override suspend fun findUserById(id: UserId): User? = withContext(ioDispatcher) {
+    userApi.findUserById(id)
   }
 
   // TODO: Call userApi's methods on ioDispatcher
-  override suspend fun getPostsByUserId(id: UserId): List<Post> {
-    val user: User? = this.findUserById(id)
-    return withContext(ioDispatcher) {
-      user?.let { userApi.getPostsByUser(user) } ?: emptyList()
-    }
+  override suspend fun getPostsByUserId(id: UserId): List<Post> = withContext(ioDispatcher) {
+    val user: User? = findUserById(id)
+    user?.let { userApi.getPostsByUser(user) } ?: emptyList()
   }
 
   // TODO: Call userApi's methods on ioDispatcher
-  override suspend fun findUserAndPostsById(id: UserId): UserAndPosts? {
-    val user: User? = this.findUserById(id)
-    val posts: List<Post> = this.getPostsByUserId(id)
-    return withContext(ioDispatcher) {
-      user?.let { UserAndPosts(user, posts) }
-    }
+  override suspend fun findUserAndPostsById(id: UserId): UserAndPosts? = withContext(ioDispatcher) {
+    val user: User? = findUserById(id)
+    val posts: List<Post> = getPostsByUserId(id)
+    user?.let { UserAndPosts(user, posts) }
   }
 
   // TODO: Call userApi's methods on ioDispatcher
-  override suspend fun findUserAndUserDetailsById(id: UserId): UserAndDetails? {
-    val user: User? = this.findUserById(id)
+  override suspend fun findUserAndUserDetailsById(id: UserId): UserAndDetails? = withContext(ioDispatcher) {
+    val user: User? = findUserById(id)
     val userDetails: UserDetails? = userApi.findDetailsByUser(id)
-    return withContext(ioDispatcher) {
-      user?.let { userDetails?.let { UserAndDetails(user, userDetails) } }
-    }
+    user?.let { userDetails?.let { UserAndDetails(user, userDetails) } }
   }
 }
 
