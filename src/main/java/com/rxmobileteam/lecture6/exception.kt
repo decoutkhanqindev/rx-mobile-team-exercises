@@ -6,7 +6,7 @@ import kotlinx.coroutines.*
 private val count = AtomicInteger()
 
 suspend fun maybeFailedFunction(): Int {
-  delay(100)
+  delay(1000)
 
   if (count.incrementAndGet() % 2 == 0) {
     throw RuntimeException("Failed")
@@ -62,7 +62,7 @@ fun main() = runBlocking {
   val model = DemoModel()
 
   model.doSomething()
-  delay(100)
+  delay(1000)
   model.cancelAndJoinBlocking()
 
   delay(5_000)
