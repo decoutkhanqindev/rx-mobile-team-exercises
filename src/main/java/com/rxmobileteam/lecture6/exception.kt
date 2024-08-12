@@ -41,12 +41,8 @@ class DemoModel(
     }
 
     scope.launch(handler) {
-      try {
-        val result = maybeFailedFunction()
-        logger.log(result.toString())
-      } catch (e: Exception) {
-        logger.logError(e,"Unexpected error")
-      }
+      val result = maybeFailedFunction()
+      logger.log(result.toString())
     }
   }
 
