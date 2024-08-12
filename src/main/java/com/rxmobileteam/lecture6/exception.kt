@@ -37,7 +37,7 @@ class DemoModel(
     // Note: You must preserve the cancellation semantics of the coroutine
 
     val handler = CoroutineExceptionHandler { _, throwable ->
-      logger.logError(throwable, "maybeFailedFunction() is failed")
+      logger.logError(throwable, "maybeFailedFunction()")
     }
 
     scope.launch(handler) {
