@@ -93,7 +93,7 @@ private class GetDataRequest<V>(
 // Hint: use kotlin.coroutines.Continuation<T>
 private suspend fun <V> GetDataRequest<V>.startAndAwait(): Result<V> = suspendCoroutine { continuation ->
   start(
-    onCancel = { continuation.resumeWithException(CancellationException("CancellationException")) },
+    onCancel = { continuation.resumeWithException(CancellationException("Operation cancelled")) },
     onResult = { result: Result<V> -> continuation.resume(result) },
   )
 }
