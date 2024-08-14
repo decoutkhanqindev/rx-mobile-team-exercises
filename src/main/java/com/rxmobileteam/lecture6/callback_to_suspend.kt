@@ -1,12 +1,15 @@
 package com.rxmobileteam.lecture6
 
-import com.rxmobileteam.utils.ExerciseNotCompletedException
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 import kotlin.random.Random
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 private class GetDataRequestException(cause: Throwable?) : RuntimeException(cause)
 
@@ -43,29 +46,25 @@ private class GetDataRequest<V>(
     val executor = Executors.newSingleThreadExecutor()
     state = GetDataRequestState.Running(
       executor = executor,
-      future = executor.submit(
-        Callable {
-          val result = try {
-            block()
-              .let { Result.success(it) }
-              .also {
-                if (Thread.interrupted()) {
-                  throw InterruptedException()
-                }
-              }
-          } catch (e: InterruptedException) {
-            throw e
-          } catch (e: Throwable) {
-            Result.failure(GetDataRequestException(e))
+      future = executor.submit(Callable {
+        val result = try {
+          block().let { Result.success(it) }.also {
+            if (Thread.interrupted()) {
+              throw InterruptedException()
+            }
           }
-
-          synchronized(this@GetDataRequest) { state = GetDataRequestState.Completed(result) }
-          executor.shutdown()
-          onResult(result)
-
-          result
+        } catch (e: InterruptedException) {
+          throw e
+        } catch (e: Throwable) {
+          Result.failure(GetDataRequestException(e))
         }
-      ),
+
+        synchronized(this@GetDataRequest) { state = GetDataRequestState.Completed(result) }
+        executor.shutdown()
+        onResult(result)
+
+        result
+      }),
       onCancel = onCancel,
     )
   }
@@ -92,7 +91,9 @@ private class GetDataRequest<V>(
 
 // TODO: Implement the following extension function (convert callback-based API to suspend function)
 // Hint: use kotlin.coroutines.Continuation<T>
-private suspend fun <V> GetDataRequest<V>.startAndAwait(): Result<V> = throw ExerciseNotCompletedException()
+private suspend fun <V> GetDataRequest<V>.startAndAwait(): Result<V> = suspendCancellableCoroutine { continuation ->
+  start(onCancel = { continuation.cancel() }, onResult = { result: Result<V> -> continuation.resume(result) })
+}
 
 fun main() {
   GetDataRequest {
@@ -101,7 +102,7 @@ fun main() {
     if (Random.nextBoolean()) {
       throw RuntimeException("Failed to get data")
     }
-    "Data"
+    "Data from callback function"
   }.start(
     onCancel = {
       println(">>> onCancel")
@@ -111,7 +112,7 @@ fun main() {
     },
   )
 
-  Thread.sleep(3000)
+  Thread.sleep(3_000)
   println("-".repeat(80))
 
   runBlocking {
@@ -121,7 +122,7 @@ fun main() {
       if (Random.nextBoolean()) {
         throw RuntimeException("Failed to get data")
       }
-      "Data"
+      "Data from suspend function"
     }.startAndAwait()
 
     println(">>> result: $result")
