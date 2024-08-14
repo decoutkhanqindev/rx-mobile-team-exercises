@@ -4,12 +4,12 @@ import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
+import kotlin.coroutines.cancellation.CancellationException
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 import kotlin.random.Random
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.suspendCancellableCoroutine
 
 private class GetDataRequestException(cause: Throwable?) : RuntimeException(cause)
 
@@ -91,38 +91,37 @@ private class GetDataRequest<V>(
 
 // TODO: Implement the following extension function (convert callback-based API to suspend function)
 // Hint: use kotlin.coroutines.Continuation<T>
-private suspend fun <V> GetDataRequest<V>.startAndAwait(): Result<V> = suspendCancellableCoroutine { continuation ->
-  start(onCancel = { continuation.cancel() }, onResult = { result: Result<V> -> continuation.resume(result) })
+private suspend fun <V> GetDataRequest<V>.startAndAwait(): Result<V> = suspendCoroutine { continuation ->
+  start(
+    onCancel = { continuation.resumeWithException(CancellationException("CancellationException")) },
+    onResult = { result: Result<V> -> continuation.resume(result) },
+  )
 }
 
 fun main() {
   GetDataRequest {
-    Thread.sleep(2_000)
+    Thread.sleep(500)
     println(">>> after delay")
     if (Random.nextBoolean()) {
       throw RuntimeException("Failed to get data")
     }
-    "Data from callback function"
+    "Data from callback function" // result
   }.start(
-    onCancel = {
-      println(">>> onCancel")
-    },
-    onResult = { result: Result<String> ->
-      println(">>> onResult: $result")
-    },
+    onCancel = { println(">>> onCancel") },
+    onResult = { result: Result<String> -> println(">>> onResult: $result") },
   )
 
-  Thread.sleep(3_000)
+  Thread.sleep(1000)
   println("-".repeat(80))
 
   runBlocking {
     val result = GetDataRequest {
-      Thread.sleep(2_000)
+      Thread.sleep(500)
       println(">>> after delay")
       if (Random.nextBoolean()) {
         throw RuntimeException("Failed to get data")
       }
-      "Data from suspend function"
+      "Data from suspend function" // result
     }.startAndAwait()
 
     println(">>> result: $result")
