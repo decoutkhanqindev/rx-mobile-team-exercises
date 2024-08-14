@@ -99,17 +99,17 @@ private suspend fun <V> GetDataRequest<V>.startAndAwait(): Result<V> = suspendCo
 }
 
 fun main() {
-//  GetDataRequest {
-//    Thread.sleep(500)
-//    println(">>> after delay")
-//    if (Random.nextBoolean()) {
-//      throw RuntimeException("Failed to get data")
-//    }
-//    "Data from callback function" // result
-//  }.start(
-//    onCancel = { println(">>> onCancel") },
-//    onResult = { result: Result<String> -> println(">>> onResult: $result") },
-//  )
+  GetDataRequest {
+    Thread.sleep(500)
+    println(">>> after delay")
+    if (Random.nextBoolean()) {
+      throw RuntimeException("Failed to get data")
+    }
+    "Data from callback function" // result
+  }.start(
+    onCancel = { println(">>> onCancel") },
+    onResult = { result: Result<String> -> println(">>> onResult: $result") },
+  )
 
   Thread.sleep(1000)
   println("-".repeat(80))
