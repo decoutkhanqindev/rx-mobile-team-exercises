@@ -3,7 +3,6 @@ package com.rxmobileteam.lecture1.factory;
 import com.rxmobileteam.lecture1.data.IProductDao;
 import com.rxmobileteam.lecture1.data.ProductDao;
 import com.rxmobileteam.lecture1.service.ProductService;
-import com.rxmobileteam.utils.ExerciseNotCompletedException;
 import org.jetbrains.annotations.NotNull;
 
 /**

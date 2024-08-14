@@ -2,7 +2,6 @@ package com.rxmobileteam.lecture11
 
 import com.rxmobileteam.utils.ExerciseNotCompletedException
 import io.reactivex.rxjava3.core.Single
-import java.util.concurrent.TimeoutException
 
 object Riddle32 {
   /**

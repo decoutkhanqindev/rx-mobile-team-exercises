@@ -36,7 +36,7 @@ class DemoModel(
     // Call logger.logError() with the exception and a message
     // Note: You must preserve the cancellation semantics of the coroutine
 
-    val handler = CoroutineExceptionHandler { _, throwable ->
+    val handler = CoroutineExceptionHandler { coroutineContext, throwable ->
       logger.logError(throwable, "maybeFailedFunction()")
     }
 
