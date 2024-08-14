@@ -10,6 +10,7 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 import kotlin.random.Random
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 private class GetDataRequestException(cause: Throwable?) : RuntimeException(cause)
 
@@ -97,6 +98,15 @@ private suspend fun <V> GetDataRequest<V>.startAndAwait(): Result<V> = suspendCo
     onResult = { result: Result<V> -> continuation.resume(result) },
   )
 }
+
+/*
+private suspend fun <V> GetDataRequest<V>.startAndAwait(): Result<V> = suspendCancellableCoroutine { continuation ->
+  start(
+    onCancel = { continuation.cancel() },
+    onResult = { result: Result<V> -> continuation.resume(result) },
+  )
+}
+*/
 
 fun main() {
   GetDataRequest {
