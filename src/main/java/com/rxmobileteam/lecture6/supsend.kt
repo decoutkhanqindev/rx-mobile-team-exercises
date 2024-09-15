@@ -2,7 +2,9 @@ package com.rxmobileteam.lecture6
 
 import java.util.*
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -90,16 +92,28 @@ internal class RealUserRepository(
 
   // TODO: Call userApi's methods on ioDispatcher
   override suspend fun findUserAndPostsById(id: UserId): UserAndPosts? = withContext(ioDispatcher) {
-    val user: User? = findUserById(id)
+    val user: User? = findUserById(id) ?: return@withContext null
     val posts: List<Post> = getPostsByUserId(id)
     user?.let { UserAndPosts(user, posts) }
   }
 
-  // TODO: Call userApi's methods on ioDispatcher
+  // TODO: Call userApi's methods on ioDispatcher -> concurrently
   override suspend fun findUserAndUserDetailsById(id: UserId): UserAndDetails? = withContext(ioDispatcher) {
-    val user: User? = findUserById(id)
-    val userDetails: UserDetails? = userApi.findDetailsByUser(id)
-    user?.let { userDetails?.let { UserAndDetails(user, userDetails) } }
+    val userDeferred: Deferred<User?> = async {
+      delay(1000)
+      findUserById(id)
+    }
+
+    val userDetailsDeferred: Deferred<UserDetails?> = async {
+      delay(2000)
+      userApi.findDetailsByUser(id)
+    }
+
+    userDeferred.await()?.let { user: User ->
+      userDetailsDeferred.await()?.let { userDetail: UserDetails ->
+        UserAndDetails(user, userDetail)
+      }
+    }
   }
 }
 
