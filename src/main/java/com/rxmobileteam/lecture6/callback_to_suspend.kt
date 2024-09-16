@@ -4,11 +4,9 @@ import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
-import kotlin.coroutines.cancellation.CancellationException
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 import kotlin.random.Random
+import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 
@@ -92,21 +90,25 @@ private class GetDataRequest<V>(
 
 // TODO: Implement the following extension function (convert callback-based API to suspend function)
 // Hint: use kotlin.coroutines.Continuation<T>
-private suspend fun <V> GetDataRequest<V>.startAndAwait(): Result<V> = suspendCoroutine { continuation ->
-  start(
-    onCancel = { continuation.resumeWithException(CancellationException("Operation cancelled")) },
-    onResult = { result: Result<V> -> continuation.resume(result) },
-  )
-}
+//private suspend fun <V> GetDataRequest<V>.startAndAwait(): Result<V> =
+//  suspendCoroutine { continuation: Continuation<Result<V>> ->
+//    start(
+//      onCancel = { continuation.resumeWithException(CancellationException("Operation cancelled")) },
+//      onResult = { result: Result<V> -> continuation.resume(result) },
+//    )
+//  }
 
-/*
-private suspend fun <V> GetDataRequest<V>.startAndAwait(): Result<V> = suspendCancellableCoroutine { continuation ->
-  start(
-    onCancel = { continuation.cancel() },
-    onResult = { result: Result<V> -> continuation.resume(result) },
-  )
-}
-*/
+private suspend fun <V> GetDataRequest<V>.startAndAwait(): Result<V> =
+  suspendCancellableCoroutine { continuation: CancellableContinuation<Result<V>> ->
+    continuation.invokeOnCancellation {
+      println(">>>> canceling")
+      this.cancel()
+    }
+    start(
+      onCancel = { continuation.cancel() },
+      onResult = { result: Result<V> -> continuation.resume(result) },
+    )
+  }
 
 fun main() {
   GetDataRequest {

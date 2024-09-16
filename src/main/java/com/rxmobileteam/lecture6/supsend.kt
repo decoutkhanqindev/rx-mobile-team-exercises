@@ -102,13 +102,16 @@ internal class RealUserRepository(
     val userDeferred: Deferred<User?> = async {
       delay(1000)
       findUserById(id)
-    }
+    } // -> run concurrently
 
     val userDetailsDeferred: Deferred<UserDetails?> = async {
       delay(2000)
       userApi.findDetailsByUser(id)
-    }
+    } // -> run concurrently
 
+    // -> max time is 2s
+
+    // wait userDeferred and userDetailsDeferred
     userDeferred.await()?.let { user: User ->
       userDetailsDeferred.await()?.let { userDetail: UserDetails ->
         UserAndDetails(user, userDetail)

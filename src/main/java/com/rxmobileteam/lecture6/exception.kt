@@ -1,6 +1,7 @@
 package com.rxmobileteam.lecture6
 
 import java.util.concurrent.atomic.AtomicInteger
+import kotlin.coroutines.EmptyCoroutineContext.fold
 import kotlinx.coroutines.*
 
 private val count = AtomicInteger()
@@ -28,7 +29,9 @@ class Logger {
 class DemoModel(
   private val logger: Logger = Logger(),
 ) {
-  val scope = CoroutineScope(Dispatchers.Default + Job())
+  val scope = CoroutineScope(Dispatchers.Default + Job() + CoroutineExceptionHandler { coroutineContext, throwable ->
+    logger.logError(throwable, "maybeFailedFunction()")
+  }) // + CoroutineExceptionHandler ... -> general exception handling
 
   fun doSomething() {
     // TODO: Implement exception handling when calling maybeFailedFunction()
@@ -36,13 +39,31 @@ class DemoModel(
     // Call logger.logError() with the exception and a message
     // Note: You must preserve the cancellation semantics of the coroutine
 
-    val handler = CoroutineExceptionHandler { coroutineContext, throwable ->
-      logger.logError(throwable, "maybeFailedFunction()")
+    /* normal style handle exceptions
+    scope.launch { // handle special exceptions -> flexible
+      try {
+        val result: Int = maybeFailedFunction()
+        logger.log("Result = $result")
+      } catch (cancel: CancellationException) {
+        throw cancel
+      } catch (e: Exception) {
+        logger.log(e.message.toString())
+      }
     }
+    */
 
-    scope.launch(handler) {
-      val result = maybeFailedFunction()
-      logger.log(result.toString())
+    // or
+    // functional style handle exceptions
+    scope.launch {
+      runCatching { maybeFailedFunction() }
+        .fold(
+          onSuccess = { result: Int -> logger.log("Result = $result") },
+          onFailure = { e: Throwable -> {
+              if (e is CancellationException) throw e
+              logger.log(e.toString())
+            }
+          }
+        )
     }
   }
 
